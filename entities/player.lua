@@ -11,6 +11,10 @@ function Player:initialize(world, x,y)
   world:add(self, self.x, self.y, width, height)
 end
 
+function Player:filter(other)
+  return false
+end
+
 function Player:update(dt)
   local dx, dy = 0, 0
   if love.keyboard.isDown('right') then
@@ -25,12 +29,17 @@ function Player:update(dt)
   end
 
   if dx ~= 0 or dy ~= 0 then
-    self.x, self.y = self.world:move(self, self.x + dx, self.y + dy)
+    self.x, self.y = self.world:move(self, self.x + dx, self.y + dy, self.filter)
   end
 end
 
 function Player:draw()
+  love.graphics.setColor(0,255,0)
   love.graphics.rectangle('line', self.x, self.y, width, height)
+end
+
+function Player:getCenter()
+  return self.x + width / 2, self.y + height / 2
 end
 
 return Player
