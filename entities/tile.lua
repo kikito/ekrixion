@@ -15,4 +15,7 @@ function Tile:draw()
   love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
 end
 
+function Tile:update(dt)
+end
+
 return Tile

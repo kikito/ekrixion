@@ -1,5 +1,7 @@
 local class = require 'lib.middleclass'
 
+local Bullet = require 'entities.bullet'
+
 local Player = class 'Player'
 
 local width, height = 16,16
@@ -34,6 +36,10 @@ function Player:update(dt)
     dy = dy * speed * dt / len
 
     self.x, self.y = self.world:move(self, self.x + dx, self.y + dy, self.filter)
+  end
+
+  if love.keyboard.isDown(' ') then
+    Bullet:new(self.world, self.x + width / 2, self.y + height / 2, 10, 0)
   end
 end
 

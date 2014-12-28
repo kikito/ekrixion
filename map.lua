@@ -23,8 +23,12 @@ function Map:draw()
   love.graphics.print("Map", 100, 100)
 end
 
-function Map:update(dt)
-  self.player:update(dt)
+function Map:update(dt, l,t,w,h)
+  local visibleThings, len = self.world:queryRect(l,t,w,h)
+
+  for i=1, len do
+    visibleThings[i]:update(dt)
+  end
 end
 
 function Map:draw(drawDebug, l,t,w,h)
