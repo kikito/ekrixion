@@ -18,17 +18,21 @@ end
 function Player:update(dt)
   local dx, dy = 0, 0
   if love.keyboard.isDown('right') then
-    dx = speed * dt
+    dx = 1
   elseif love.keyboard.isDown('left') then
-    dx = -speed * dt
+    dx = -1
   end
   if love.keyboard.isDown('down') then
-    dy = speed * dt
+    dy = 1
   elseif love.keyboard.isDown('up') then
-    dy = -speed * dt
+    dy = -1
   end
 
-  if dx ~= 0 or dy ~= 0 then
+  local len = math.sqrt(dx*dx + dy*dy)
+  if len > 0 then
+    dx = dx * speed * dt / len
+    dy = dy * speed * dt / len
+
     self.x, self.y = self.world:move(self, self.x + dx, self.y + dy, self.filter)
   end
 end
