@@ -1,20 +1,19 @@
 local class = require 'lib.middleclass'
 
+local Entity = require 'entities.entity'
 local Bullet = require 'entities.bullet'
 
-local Player = class 'Player'
+local Player = class('Player', Entity)
 
 local width, height = 16,16
 local speed         = 200
 
 function Player:initialize(world, x,y)
-  self.x, self.y = x,y
-  self.world = world
-  world:add(self, self.x, self.y, width, height)
+  Entity.initialize(self, world, x,y,width,height)
 end
 
 function Player:filter(other)
-  return false
+  if other.class.name == 'Tile' then return 'slide' end
 end
 
 function Player:update(dt)
@@ -39,17 +38,11 @@ function Player:update(dt)
   end
 
   if love.keyboard.isDown(' ') then
-    Bullet:new(self.world, self.x + width / 2, self.y + height / 2, 10, 0)
+    local x,y = self:getCenter()
+    Bullet:new(self.world, x, y, 10, 0)
   end
 end
 
-function Player:draw()
-  love.graphics.setColor(0,255,0)
-  love.graphics.rectangle('line', self.x, self.y, width, height)
-end
 
-function Player:getCenter()
-  return self.x + width / 2, self.y + height / 2
-end
 
 return Player
