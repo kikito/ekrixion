@@ -16,15 +16,7 @@ function Entity:draw(drawDebug)
 end
 
 function Entity:updateClocks(dt)
-  local names, len = {}, 0
-  for name,_ in pairs(self.clocks) do
-    len = len + 1
-    names[len] = name
-  end
-
-  for i=1,len do
-    local name = names[i]
-    local clock = self.clocks[name]
+  for name,clock in pairs(self.clocks) do
     if clock:update(dt) then
       self.clocks[name] = nil
     end
