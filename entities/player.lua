@@ -6,12 +6,18 @@ local Bullet = require 'entities.bullet'
 local Player = class('Player', Entity)
 
 local width, height = 16,16
-local speed         = 200
-local angularSpeed  = 2 * math.pi
+local speed         = 200         -- pixels / second
+local angularSpeed  = 2 * math.pi -- radians / second
+local shootCoolDown = 0.1         -- secons
+
+local function shootCoolDownFinished(self)
+  self.canFire = true
+end
 
 function Player:initialize(world, x,y)
   Entity.initialize(self, world, x,y,width,height)
   self.angle = 0
+  self.canFire = true
 end
 
 function Player:filter(other)
@@ -53,10 +59,14 @@ function Player:update(dt)
     end
   end
 
-  if love.keyboard.isDown(' ') then
+  if self.canFire and love.keyboard.isDown(' ') then
     local x,y = self:getCenter()
     Bullet:new(self.world, x, y, math.cos(self.angle), math.sin(self.angle))
+    self.canFire = false
+    self:setClock('shootCoolDown', shootCoolDown, shootCoolDownFinished, self)
   end
+
+  self:updateClocks(dt)
 end
 
 function Player:draw()
