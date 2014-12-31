@@ -70,6 +70,7 @@ function Player:update(dt)
 end
 
 function Player:draw()
+  love.graphics.setColor(0,255,0)
   local x, y = self:getCenter()
   local radius = width / 2
   love.graphics.circle('line', x,y, radius)

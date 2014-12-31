@@ -18,23 +18,29 @@ function Bullet:initialize(world, x, y, vx, vy)
 end
 
 function Bullet:filter(other)
-  if other.class.name == 'Tile' then return 'touch' end
+  local kind = other.class.name
+  if kind == 'Tile' or kind == 'Target' then return 'touch' end
 end
 
 function Bullet:update(dt)
   local goalX = self.x + self.vx * dt * speed
   local goalY = self.y + self.vy * dt * speed
 
-  self.x, self.y, _, len = self.world:move(self, goalX, goalY, self.filter)
+  self.x, self.y, cols, len = self.world:move(self, goalX, goalY, self.filter)
 
   if len > 0 then
     self:destroy()
+    for i=1, len do
+      local other = cols[i].other
+      if other.class.name == 'Target' then other:destroy() end
+    end
   else
     self:updateClocks(dt)
   end
 end
 
 function Bullet:draw()
+  love.graphics.setColor(255,255,255)
   local x, y = self:getCenter()
   local radius = width / 2
   love.graphics.circle('line', x,y, radius)

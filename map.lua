@@ -3,6 +3,7 @@ local class = require 'lib.middleclass'
 
 local Player = require 'entities.player'
 local Tile   = require 'entities.tile'
+local Target = require 'entities.target'
 
 local Map = class('Map')
 
@@ -16,6 +17,12 @@ function Map:initialize(player)
     Tile:new(self.world,
              math.random(100, width - 100),
              math.random(100, height - 100))
+  end
+
+  for i=1,40 do
+    Target:new(self.world,
+               math.random(100, width - 100),
+               math.random(100, height - 100))
   end
 end
 
