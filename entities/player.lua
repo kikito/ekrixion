@@ -7,9 +7,11 @@ local Player = class('Player', Entity)
 
 local width, height = 16,16
 local speed         = 200
+local angularSpeed  = 2 * math.pi
 
 function Player:initialize(world, x,y)
   Entity.initialize(self, world, x,y,width,height)
+  self.angle = 0
 end
 
 function Player:filter(other)
@@ -29,18 +31,39 @@ function Player:update(dt)
     dy = -1
   end
 
-  local len = math.sqrt(dx*dx + dy*dy)
-  if len > 0 then
-    dx = dx * speed * dt / len
-    dy = dy * speed * dt / len
+  if dx ~= 0 or dy ~= 0 then
+    local target = math.atan2(dy,dx)
+    local angle  = self.angle
 
-    self.x, self.y = self.world:move(self, self.x + dx, self.y + dy, self.filter)
+    local pi    = math.pi
+    local diff  = (target - angle + pi) % (2 * pi) - pi
+    local adiff = math.abs(diff)
+
+    if adiff < angularSpeed * dt then
+      self.angle = target
+    else
+      local w = diff > 0 and angularSpeed or -angularSpeed
+      self.angle = self.angle + w * dt
+    end
+
+    if adiff < pi / 4 then
+      local x,y = math.cos(self.angle) * speed * dt, math.sin(self.angle) * speed * dt
+
+      self.x, self.y = self.world:move(self, self.x + x, self.y + y, self.filter)
+    end
   end
 
   if love.keyboard.isDown(' ') then
     local x,y = self:getCenter()
-    Bullet:new(self.world, x, y, 10, 0)
+    Bullet:new(self.world, x, y, math.cos(self.angle), math.sin(self.angle))
   end
+end
+
+function Player:draw()
+  local x, y = self:getCenter()
+  local radius = width / 2
+  love.graphics.circle('line', x,y, radius)
+  love.graphics.line(x,y, x + radius * math.cos(self.angle), y + radius * math.sin(self.angle))
 end
 
 
