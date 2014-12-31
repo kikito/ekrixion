@@ -5,7 +5,7 @@ local Entity = require 'entities.entity'
 local Bullet = class('Bullet', Entity)
 
 local width, height = 8,8
-local speed = 500
+local speed = 800
 
 function Bullet:initialize(world, x, y, vx, vy)
   x,y = x - width / 2, y - height / 2
@@ -32,6 +32,12 @@ function Bullet:update(dt)
   else
     self:updateClocks(dt)
   end
+end
+
+function Bullet:draw()
+  local x, y = self:getCenter()
+  local radius = width / 2
+  love.graphics.circle('line', x,y, radius)
 end
 
 return Bullet
