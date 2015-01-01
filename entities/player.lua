@@ -52,11 +52,8 @@ function Player:update(dt)
       self.angle = self.angle + w * dt
     end
 
-    if adiff < pi / 4 then
-      local x,y = math.cos(self.angle) * speed * dt, math.sin(self.angle) * speed * dt
-
-      self.x, self.y = self.world:move(self, self.x + x, self.y + y, self.filter)
-    end
+    local x,y = math.cos(target) * speed * dt, math.sin(target) * speed * dt
+    self.x, self.y = self.world:move(self, self.x + x, self.y + y, self.filter)
   end
 
   if self.canFire and love.keyboard.isDown(' ') then
