@@ -58,7 +58,7 @@ function Player:update(dt)
 
   if self.canFire and love.keyboard.isDown(' ') then
     local x,y = self:getCenter()
-    Bullet:new(self.world, x, y, math.cos(self.angle), math.sin(self.angle))
+    Bullet:new(self.world, x, y, self.angle)
     self.canFire = false
     self:setClock('shootCoolDown', shootCoolDown, shootCoolDownFinished, self)
   end
