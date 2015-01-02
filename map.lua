@@ -31,7 +31,8 @@ function Map:draw()
 end
 
 function Map:update(dt, l,t,w,h)
-  local visibleThings, len = self.world:queryRect(l,t,w,h)
+  local margin = 100
+  local visibleThings, len = self.world:queryRect(l-margin,t-margin,w+2*margin,h+2*margin)
 
   for i=1, len do
     visibleThings[i]:update(dt)
