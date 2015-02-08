@@ -1,4 +1,5 @@
 local class = require 'lib.middleclass'
+local cron  = require 'lib.cron'
 
 local Entity = require 'entities.entity'
 
@@ -6,13 +7,12 @@ local Bullet = class('Bullet', Entity)
 
 local width, height = 8,8
 local speed  = 800
-local spread = 0.2 -- radians
 
 function Bullet:initialize(world, x, y, angle)
   x,y = x - width / 2, y - height / 2
   Entity.initialize(self, world, x,y, width, height)
-  self.angle = angle + spread * (math.random() - 0.5)
-  self:setClock('maxLife', 0.5, self.destroy, self)
+  self.angle = angle
+  self.expiration = cron.after(0.5, self.destroy, self)
 end
 
 function Bullet:filter(other)
@@ -34,7 +34,7 @@ function Bullet:update(dt)
       if other.class.name == 'Target' then other:destroy() end
     end
   else
-    self:updateClocks(dt)
+    self.expiration:update(dt)
   end
 end
 

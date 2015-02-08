@@ -1,23 +1,19 @@
 local class = require 'lib.middleclass'
 
+local Uzi = require 'entities.uzi'
+
 local Entity = require 'entities.entity'
-local Bullet = require 'entities.bullet'
 
 local Player = class('Player', Entity)
 
 local width, height = 16,16
 local speed         = 200         -- pixels / second
 local angularSpeed  = 2 * math.pi -- radians / second
-local shootCoolDown = 0.1         -- secons
-
-local function shootCoolDownFinished(self)
-  self.canFire = true
-end
 
 function Player:initialize(world, x,y)
   Entity.initialize(self, world, x,y,width,height)
   self.angle = 0
-  self.canFire = true
+  self.weapon = Uzi:new(world)
 end
 
 function Player:filter(other)
@@ -25,6 +21,8 @@ function Player:filter(other)
 end
 
 function Player:update(dt)
+  self.weapon:update(dt)
+
   local dx, dy = 0, 0
   if love.keyboard.isDown('right') then
     dx = 1
@@ -56,14 +54,10 @@ function Player:update(dt)
     self.x, self.y = self.world:move(self, self.x + x, self.y + y, self.filter)
   end
 
-  if self.canFire and love.keyboard.isDown(' ') then
+  if love.keyboard.isDown(' ') then
     local x,y = self:getCenter()
-    Bullet:new(self.world, x, y, self.angle)
-    self.canFire = false
-    self:setClock('shootCoolDown', shootCoolDown, shootCoolDownFinished, self)
+    self.weapon:shoot(x,y,self.angle)
   end
-
-  self:updateClocks(dt)
 end
 
 function Player:draw()
@@ -73,7 +67,6 @@ function Player:draw()
   love.graphics.circle('line', x,y, radius)
   love.graphics.line(x,y, x + radius * math.cos(self.angle), y + radius * math.sin(self.angle))
 end
-
 
 
 return Player
