@@ -1,6 +1,7 @@
 local class = require 'lib.middleclass'
 
-local Uzi = require 'entities.uzi'
+local Shotgun = require 'weapons.shotgun'
+local Uzi     = require 'weapons.uzi'
 
 local Entity = require 'entities.entity'
 
@@ -13,7 +14,7 @@ local angularSpeed  = 2 * math.pi -- radians / second
 function Player:initialize(world, x,y)
   Entity.initialize(self, world, x,y,width,height)
   self.angle = 0
-  self.weapon = Uzi:new(world)
+  self.weapon = Shotgun:new(world)
 end
 
 function Player:filter(other)
@@ -56,7 +57,7 @@ function Player:update(dt)
 
   if love.keyboard.isDown(' ') then
     local x,y = self:getCenter()
-    self.weapon:shoot(x,y,self.angle)
+    self.weapon:attack(x,y,self.angle)
   end
 end
 
