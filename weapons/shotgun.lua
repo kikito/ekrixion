@@ -7,7 +7,7 @@ local Shotgun = class('Shotgun', Weapon)
 function Shotgun:initialize(world)
   Weapon:initialize(world, {
     spread   = 0.3,
-    coolDown = 0.4,
+    coolDown = 0.7,
     bulletsPerShot  = 6,
     projectileClass = Pellet
   })

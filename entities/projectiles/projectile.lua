@@ -14,8 +14,11 @@ function Projectile:initialize(world, x, y, angle, opt)
   Entity.initialize(self, world, x,y, width, height)
 
   self.angle  = angle
-  self.life   = opt.life   or 0.5
+  self.life   = opt.life or 0.5
+  self.speedVariance = opt.speedVariance or 0
   self.speed  = opt.speed  or 800
+
+  self.speed = self.speed + (math.random() - 0.5) * self.speedVariance
 
   self.clock = cron.after(0.5, self.destroy, self)
 end
