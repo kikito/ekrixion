@@ -34,11 +34,16 @@ function Projectile:update(dt)
   if len > 0 then
     self:destroy()
     for i=1, len do
-      local other = cols[i].other
-      if other.class.name == 'Target' then other:destroy() end
+      self:hit(cols[i].other)
     end
   else
     self.clock:update(dt)
+  end
+end
+
+function Projectile:hit(other)
+  if other.class.name == 'Target' then
+    other:destroy()
   end
 end
 

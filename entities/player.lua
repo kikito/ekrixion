@@ -2,6 +2,8 @@ local class = require 'lib.middleclass'
 
 local Shotgun = require 'weapons.shotgun'
 local Uzi     = require 'weapons.uzi'
+local Handgun = require 'weapons.handgun'
+local Bazooka = require 'weapons.bazooka'
 
 local Entity = require 'entities.entity'
 
@@ -14,7 +16,7 @@ local angularSpeed  = 2 * math.pi -- radians / second
 function Player:initialize(world, x,y)
   Entity.initialize(self, world, x,y,width,height)
   self.angle = 0
-  self.weapon = Shotgun:new(world)
+  self.weapon = Uzi:new(world)
 end
 
 function Player:filter(other)

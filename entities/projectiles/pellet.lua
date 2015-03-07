@@ -8,7 +8,7 @@ local options = {
   height = 4,
   life   = 0.4,
   speed  = 1500,
-  speedVariance = 600
+  speedVariance = 800
 }
 
 function Pellet:initialize(world, x, y, angle)
