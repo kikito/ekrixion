@@ -4,8 +4,10 @@ local Map = require 'Map'
 local Play = {}
 
 function Play:enteredState()
-  self.map = Map:new()
-  self.camera = gamera.new(0,0, self.map:getDimensions())
+  local width, height = 2000, 2000
+
+  self.camera = gamera.new(0,0, width, height)
+  self.map = Map:new(width, height, self.camera)
 end
 
 function Play:keypressed(key, isrepeat)

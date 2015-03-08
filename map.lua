@@ -7,11 +7,13 @@ local Target = require 'entities.target'
 
 local Map = class('Map')
 
-local width, height = 2000, 2000
+function Map:initialize(width, height, camera)
+  self.height = height
+  self.width = width
+  self.camera = camera
 
-function Map:initialize(player)
   self.world = bump.newWorld()
-  self.player = Player:new(self.world, 100, 100)
+  self.player = Player:new(camera, self.world, 100, 100)
 
   for i=1,100 do
     Tile:new(self.world,
@@ -45,10 +47,6 @@ function Map:draw(drawDebug, l,t,w,h)
   for i=1, len do
     visibleThings[i]:draw(drawDebug)
   end
-end
-
-function Map:getDimensions()
-  return width, height
 end
 
 function Map:getPlayerPosition()
