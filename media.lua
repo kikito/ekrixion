@@ -1,3 +1,5 @@
+local multisource = require 'lib.multisource'
+
 local media = {}
 
 local function newSource(name)
@@ -8,6 +10,11 @@ end
 
 media.load = function()
   local names = [[
+    bullet-hit
+    bullet-shot
+    explosion
+    rocket-shot
+    shotgun-shot
   ]]
 
   media.sfx = {}

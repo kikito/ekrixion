@@ -9,7 +9,8 @@ function Handgun:initialize(world)
     spread   = 0.01, -- radians
     coolDown = 0.7, -- seconds
     bulletsPerShot  = 1,
-    projectileClass = Bullet
+    projectileClass = Bullet,
+    soundName       = 'bullet-shot'
   })
 end
 

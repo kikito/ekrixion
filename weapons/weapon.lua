@@ -1,5 +1,7 @@
 local class = require 'lib.middleclass'
-local cron = require 'lib.cron'
+local cron  = require 'lib.cron'
+
+local media = require 'media'
 
 local Bullet = require 'entities.projectiles.bullet'
 
@@ -17,6 +19,7 @@ function Weapon:initialize(world, opts)
   self.coolDown        = opts.coolDown or 0.1 -- seconds
   self.bulletsPerShot  = opts.bulletsPerShot or 1
   self.projectileClass = opts.projectileClass or Bullet
+  self.soundName       = opts.soundName
 end
 
 function Weapon:update(dt)
@@ -27,6 +30,8 @@ end
 
 function Weapon:attack(x,y,angle)
   if self.canFire then
+    media.sfx[self.soundName]:play()
+
     for i=1, self.bulletsPerShot do
       local a = angle + self.spread * (math.random() - 0.5)
       self.projectileClass:new(self.world, x, y, a)

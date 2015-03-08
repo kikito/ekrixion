@@ -1,4 +1,5 @@
 local class      = require 'lib.middleclass'
+local media      = require 'media'
 local Projectile = require 'entities.projectiles.projectile'
 local Puff       = require 'entities.puff'
 
@@ -16,6 +17,7 @@ function Rocket:initialize(world, x, y, angle)
 end
 
 function Rocket:destroy()
+  -- Todo: generalize into puffgroup/explosion
   for i=1,5 do
     Puff:new(self.world,
       self.x + (math.random() - 0.5) * 100,
@@ -24,6 +26,9 @@ function Rocket:destroy()
       60 + math.random() * 60
     )
   end
+
+  media.sfx.explosion:play()
+
   Projectile.destroy(self)
 end
 

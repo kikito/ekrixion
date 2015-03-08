@@ -1,4 +1,6 @@
 local class      = require 'lib.middleclass'
+local media      = require 'media'
+
 local Projectile = require 'entities.projectiles.projectile'
 local Puff       = require 'entities.puff'
 
@@ -17,6 +19,8 @@ end
 
 function Bullet:hit(other)
   Projectile.hit(self, other)
+
+  media.sfx['bullet-hit']:play()
 
   for i=1,3 do
     Puff:new(

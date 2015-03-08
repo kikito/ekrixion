@@ -1,4 +1,6 @@
 local class      = require 'lib.middleclass'
+local media      = require 'media'
+local Puff       = require 'entities.puff'
 local Projectile = require 'entities.projectiles.projectile'
 
 local Pellet = class('Pellet', Projectile)
@@ -31,6 +33,26 @@ function Pellet:draw()
   love.graphics.setColor(255,255,255)
   local w2,h2 = self.w/2, self.h/2
   love.graphics.line(self.x+w2, self.y+h2, self.trace_x+w2, self.trace_y+h2)
+end
+
+function Pellet:hit(other)
+  Projectile.hit(self, other)
+
+  media.sfx['bullet-hit']:play()
+
+  -- FIXME: generalize into puffgroup/explosion
+
+  for i=1,3 do
+    Puff:new(
+      self.world,
+      self.x + (math.random() - 0.5) * self.w,
+      self.y + (math.random() - 0.5) * self.h,
+      5 + math.random() * 5,
+      3 + math.random() * 3,
+      math.random()
+    )
+  end
+
 end
 
 

@@ -9,7 +9,8 @@ function Shotgun:initialize(world)
     spread   = 0.3,
     coolDown = 0.7,
     bulletsPerShot  = 6,
-    projectileClass = Pellet
+    projectileClass = Pellet,
+    soundName = 'shotgun-shot'
   })
 end
 

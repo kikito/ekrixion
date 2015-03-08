@@ -9,7 +9,8 @@ function Bazooka:initialize(world)
     spread   = 0.01, -- radians
     coolDown = 0.7, -- seconds
     bulletsPerShot  = 1,
-    projectileClass = Rocket
+    projectileClass = Rocket,
+    soundName = 'rocket-shot'
   })
 end
 

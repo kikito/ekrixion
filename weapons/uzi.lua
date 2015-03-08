@@ -9,7 +9,8 @@ function Uzi:initialize(world)
     spread   = 0.1, -- radians
     coolDown = 0.1, -- seconds
     bulletsPerShot  = 1,
-    projectileClass = Bullet
+    projectileClass = Bullet,
+    soundName       = 'bullet-shot'
   })
 end
 
