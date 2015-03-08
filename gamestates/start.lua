@@ -1,7 +1,7 @@
 local Start = {}
 
 function Start:draw()
-  love.graphics.print("Tough guy", 100,100)
+  love.graphics.print("Ekrixion", 100,100)
   love.graphics.print("Press any key to start, esc to exit", 100, 150)
 end
 
