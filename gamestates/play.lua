@@ -9,8 +9,11 @@ function Play:enteredState()
 end
 
 function Play:keypressed(key, isrepeat)
-  if key == 'escape' then
-    self:gotoState('Start')
+  if     key == 'escape' then self:gotoState('Start')
+  elseif key == '1'      then self.map:setWeapon('handgun')
+  elseif key == '2'      then self.map:setWeapon('uzi')
+  elseif key == '3'      then self.map:setWeapon('shotgun')
+  elseif key == '4'      then self.map:setWeapon('bazooka')
   end
 end
 

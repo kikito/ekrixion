@@ -55,6 +55,10 @@ function Map:getPlayerPosition()
   return self.player:getCenter()
 end
 
+function Map:setWeapon(name)
+  self.player:setWeapon(name)
+end
+
 
 
 return Map

@@ -16,15 +16,29 @@ local angularSpeed  = 2 * math.pi -- radians / second
 function Player:initialize(world, x,y)
   Entity.initialize(self, world, x,y,width,height)
   self.angle = 0
-  self.weapon = Uzi:new(world)
+
+  self.weapons = {
+    uzi     = Uzi:new(world),
+    shotgun = Shotgun:new(world),
+    bazooka = Bazooka:new(world),
+    handgun = Handgun:new(world)
+  }
+
+  self.weapon = self.weapons.uzi
 end
 
 function Player:filter(other)
   if other.class.name == 'Tile' then return 'slide' end
 end
 
+function Player:setWeapon(name)
+  self.weapon = assert(self.weapons[name])
+end
+
 function Player:update(dt)
-  self.weapon:update(dt)
+  for _,weapon in pairs(self.weapons) do
+    weapon:update(dt)
+  end
 
   local dx, dy = 0, 0
   if love.keyboard.isDown('right') then
