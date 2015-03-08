@@ -17,15 +17,14 @@ function Rocket:initialize(world, x, y, angle)
 end
 
 function Rocket:destroy()
-  -- Todo: generalize into puffgroup/explosion
-  for i=1,5 do
-    Puff:new(self.world,
-      self.x + (math.random() - 0.5) * 100,
-      self.y + (math.random() - 0.5) * 100,
-      40 + math.random() * 40,
-      60 + math.random() * 60
-    )
-  end
+
+  local size=40
+  Puff:createMany(self.world,
+    5,
+    self.x-size, self.y-size, self.w+size, self.h+size,
+    40, 60,
+    0.5
+  )
 
   media.sfx.explosion:play()
 

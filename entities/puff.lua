@@ -7,6 +7,22 @@ local Puff = class('Puff', Entity)
 
 local up_speed = 30
 
+function Puff.static:createMany(world, how_many,
+                                area_x, area_y, area_w, area_h,
+                                w, h,
+                                duration)
+  for i=1, how_many do
+    Puff:new(
+      world,
+      area_x + math.random() * area_w,
+      area_y + math.random() * area_h,
+      w + math.random() * w,
+      h + math.random() * h,
+      duration + math.random() * duration
+    )
+  end
+end
+
 function Puff:initialize(world, x,y,w,h, duration)
   x = x - w/2
   y = y - h/2

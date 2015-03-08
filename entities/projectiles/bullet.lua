@@ -22,17 +22,12 @@ function Bullet:hit(other)
 
   media.sfx['bullet-hit']:play()
 
-  for i=1,3 do
-    Puff:new(
-      self.world,
-      self.x + (math.random() - 0.5) * self.w,
-      self.y + (math.random() - 0.5) * self.h,
-      5 + math.random() * 5,
-      3 + math.random() * 3,
-      math.random()
-    )
-  end
-
+  Puff:createMany(self.world,
+    3,
+    self.x, self.y, self.w, self.h,
+    5, 3,
+    0.5
+  )
 end
 
 return Bullet
