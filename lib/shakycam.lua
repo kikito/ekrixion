@@ -12,17 +12,28 @@ local sakycam = {}
 
 local ShakyCam = {}
 
-function ShakyCam:draw(f)
-  self.camera:draw(f)
+function doShake(self, dt)
+  local x,y = self.camera:getPosition()
+
+  x = x + (200 * (math.random() - 0.5) * self.shakeIntensity) * dt
+  y = y + (200 * (math.random() - 0.5) * self.shakeIntensity) * dt
+  self:setPosition(x,y)
 end
 
-function ShakyCam:getVisible()
-  return self.camera:getVisible()
+local methods = [[
+  setWorld setWindow setPosition setAngle
+  getScale getWorld getWindow getPosition getScale getAngle
+  getVisible getVisibleCorners
+  draw
+  toWorld toScreen
+]]
+
+for name in methods:gmatch('%S+') do
+  ShakyCam[name] = function(self, ...)
+    return self.camera[name](self.camera, ...)
+  end
 end
 
-function ShakyCam:setPosition(x,y)
-  self.camera:setPosition(x,y)
-end
 
 function ShakyCam:shake(intensity)
   intensity = intensity or 3
@@ -33,11 +44,7 @@ function ShakyCam:update(dt)
   self.shakeIntensity = math.max(0 , self.shakeIntensity - atenuationSpeed * dt)
 
   if self.shakeIntensity > 0 then
-    local x,y = self.camera:getPosition()
-
-    x = x + (100 - 200*math.random(self.shakeIntensity)) * dt
-    y = y + (100 - 200*math.random(self.shakeIntensity)) * dt
-    self:setPosition(x,y)
+    doShake(self, dt)
   end
 end
 

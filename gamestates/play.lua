@@ -1,3 +1,4 @@
+local shakycam = require 'lib.shakycam'
 local gamera = require 'lib.gamera'
 local Map = require 'Map'
 
@@ -6,7 +7,9 @@ local Play = {}
 function Play:enteredState()
   local width, height = 2000, 2000
 
-  self.camera = gamera.new(0,0, width, height)
+  local camera = gamera.new(0,0, width, height)
+  self.camera = shakycam.new(camera)
+
   self.map = Map:new(width, height, self.camera)
 end
 
@@ -26,6 +29,7 @@ end
 function Play:update(dt)
   self.map:update(dt, self.camera:getVisible())
   self.camera:setPosition(self.map:getPlayerPosition())
+  self.camera:update(dt)
 end
 
 function Play:draw()

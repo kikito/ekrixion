@@ -11,9 +11,10 @@ local function coolDownFinished(self)
   self.canFire = true
 end
 
-function Weapon:initialize(world, opts)
+function Weapon:initialize(world, camera, opts)
   self.canFire = true
   self.world = world
+  self.camera = camera
 
   self.spread          = opts.spread   or 0.1 -- radians
   self.coolDown        = opts.coolDown or 0.1 -- seconds
@@ -34,11 +35,13 @@ function Weapon:attack(x,y,angle)
 
     for i=1, self.bulletsPerShot do
       local a = angle + self.spread * (math.random() - 0.5)
-      self.projectileClass:new(self.world, x, y, a)
+      self.projectileClass:new(self.world, self.camera, x, y, a)
     end
 
     self.canFire = false
     self.clock = cron.after(self.coolDown, coolDownFinished, self)
+
+    return true
   end
 end
 

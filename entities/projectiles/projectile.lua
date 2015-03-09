@@ -5,7 +5,7 @@ local Entity = require 'entities.entity'
 
 local Projectile = class('Projectile', Entity)
 
-function Projectile:initialize(world, x, y, angle, opt)
+function Projectile:initialize(world, camera, x, y, angle, opt)
 
   local width  = opt.width  or 8
   local height = opt.height or 8
@@ -13,6 +13,7 @@ function Projectile:initialize(world, x, y, angle, opt)
 
   Entity.initialize(self, world, x,y, width, height)
 
+  self.camera = camera
   self.angle  = angle
   self.life   = opt.life or 0.5
   self.speedVariance = opt.speedVariance or 0

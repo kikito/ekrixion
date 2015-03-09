@@ -12,8 +12,8 @@ local options = {
   speed  = 1000
 }
 
-function Rocket:initialize(world, x, y, angle)
-  Projectile.initialize(self, world, x, y, angle, options)
+function Rocket:initialize(world, camera, x, y, angle)
+  Projectile.initialize(self, world, camera, x, y, angle, options)
 end
 
 function Rocket:destroy()
@@ -25,6 +25,8 @@ function Rocket:destroy()
     40, 60,
     0.5
   )
+
+  self.camera:shake(4)
 
   media.sfx.explosion:play()
 

@@ -13,8 +13,8 @@ local options = {
   speed  = 800
 }
 
-function Bullet:initialize(world, x, y, angle)
-  Projectile.initialize(self, world, x, y, angle, options)
+function Bullet:initialize(world, camera,  x, y, angle)
+  Projectile.initialize(self, world, camera, x, y, angle, options)
 end
 
 function Bullet:hit(other)

@@ -20,10 +20,10 @@ function Player:initialize(camera, world, x,y)
   self.angle = 0
 
   self.weapons = {
-    uzi     = Uzi:new(world),
-    shotgun = Shotgun:new(world),
-    bazooka = Bazooka:new(world),
-    handgun = Handgun:new(world)
+    uzi     = Uzi:new(world, camera),
+    shotgun = Shotgun:new(world, camera),
+    bazooka = Bazooka:new(world, camera),
+    handgun = Handgun:new(world, camera)
   }
 
   self.weapon = self.weapons.uzi
