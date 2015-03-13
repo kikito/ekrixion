@@ -1,9 +1,11 @@
 local bump  = require 'lib.bump'
 local class = require 'lib.middleclass'
 
-local Player = require 'entities.player'
+local Pawn   = require 'entities.pawn'
 local Tile   = require 'entities.tile'
 local Target = require 'entities.target'
+
+local PlayerBrain = require 'player_brain'
 
 local Map = class('Map')
 
@@ -13,7 +15,8 @@ function Map:initialize(width, height, camera)
   self.camera = camera
 
   self.world = bump.newWorld()
-  self.player = Player:new(camera, self.world, 100, 100)
+  self.playerBrain = PlayerBrain:new(camera)
+  self.player = Pawn:new(camera, self.playerBrain, self.world, 100, 100)
 
   for i=1,100 do
     Tile:new(self.world,
@@ -53,8 +56,8 @@ function Map:getPlayerPosition()
   return self.player:getCenter()
 end
 
-function Map:setWeapon(name)
-  self.player:setWeapon(name)
+function Map:keyPressed(key)
+  self.playerBrain:keyPressed(key)
 end
 
 
