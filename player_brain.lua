@@ -7,6 +7,9 @@ function PlayerBrain:initialize(camera)
   self.weaponName = 'uzi'
 end
 
+function PlayerBrain:update(dt)
+end
+
 function PlayerBrain:setPosition(x,y)
   self.x, self.y = x,y
 end

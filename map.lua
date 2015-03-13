@@ -6,6 +6,7 @@ local Tile   = require 'entities.tile'
 local Target = require 'entities.target'
 
 local PlayerBrain = require 'player_brain'
+local CrazyBrain = require 'crazy_brain'
 
 local Map = class('Map')
 
@@ -28,6 +29,14 @@ function Map:initialize(width, height, camera)
     Target:new(self.world,
                math.random(100, width - 100),
                math.random(100, height - 100))
+  end
+
+  for i=1,3 do
+    Pawn:new(camera,
+      CrazyBrain:new(),
+      self.world,
+      math.random(100, width - 100),
+      math.random(100, height - 100))
   end
 end
 

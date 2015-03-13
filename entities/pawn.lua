@@ -74,6 +74,7 @@ function Pawn:update(dt)
   end
 
   self.brain:setPosition(self:getCenter())
+  self.brain:update(dt)
 
   local desiredAngle = self.brain:getDesiredAngle()
   self:lookTowards(desiredAngle, dt)
