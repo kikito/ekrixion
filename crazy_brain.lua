@@ -2,33 +2,17 @@ local class = require 'lib.middleclass'
 
 local CrazyBrain = class('Crazy')
 
-function CrazyBrain:initialize()
-  self.weaponName = 'uzi'
+function CrazyBrain:initialize(body)
   self.angle = 0
+  self.body = body
 end
 
 function CrazyBrain:update(dt)
   self.angle = self.angle + 0.5 * dt
-end
 
-function CrazyBrain:setPosition(x,y)
-  self.x, self.y = x,y
-end
-
-function CrazyBrain:getDesiredAngle()
-  return self.angle
-end
-
-function CrazyBrain:getDesiredMovementVector()
-  return 0,0
-end
-
-function CrazyBrain:getDesiredWeaponName()
-  return self.weaponName
-end
-
-function CrazyBrain:wantsToAttack()
-  return true
+  local body = self.body
+  body.desiredAngle = self.angle
+  body.wantsToAttack = true
 end
 
 return CrazyBrain

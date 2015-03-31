@@ -2,22 +2,29 @@ local class = require 'lib.middleclass'
 
 local PlayerBrain = class('Player')
 
-function PlayerBrain:initialize(camera)
+function PlayerBrain:initialize(camera, body)
   self.camera = camera
   self.weaponName = 'uzi'
+  self.body = body
 end
 
 function PlayerBrain:update(dt)
-end
+  local body = self.body
 
-function PlayerBrain:setPosition(x,y)
-  self.x, self.y = x,y
+  body:setWeapon(self.weaponName)
+
+  body.desiredAngle = self:getDesiredAngle()
+  body.desiredMovementVector.x,
+  body.desiredMovementVector.y = self:getDesiredMovementVector()
+
+  body.wantsToAttack = self:wantsToAttack()
 end
 
 function PlayerBrain:getDesiredAngle()
   local tx, ty = self.camera:toWorld(love.mouse.getPosition())
+  local x,y = self.body:getCenter()
 
-  return  math.atan2(ty-self.y, tx-self.x)
+  return  math.atan2(ty-y, tx-x)
 end
 
 function PlayerBrain:getDesiredMovementVector()
@@ -33,10 +40,6 @@ function PlayerBrain:getDesiredMovementVector()
     dy = -1
   end
   return dx, dy
-end
-
-function PlayerBrain:getDesiredWeaponName()
-  return self.weaponName
 end
 
 function PlayerBrain:wantsToAttack()

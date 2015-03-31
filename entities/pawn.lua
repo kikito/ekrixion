@@ -1,10 +1,5 @@
 local class = require 'lib.middleclass'
 
-local Shotgun = require 'weapons.shotgun'
-local Uzi     = require 'weapons.uzi'
-local Handgun = require 'weapons.handgun'
-local Bazooka = require 'weapons.bazooka'
-
 local Entity = require 'entities.entity'
 
 local Pawn = class('Pawn', Entity)
@@ -13,19 +8,21 @@ local width, height = 16,16
 local speed         = 200         -- pixels / second
 local angularSpeed  = 2 * math.pi -- radians / second
 
-function Pawn:initialize(camera, brain, world, x,y)
+function Pawn:initialize(camera, world, x,y)
   Entity.initialize(self, world, x,y,width,height)
 
   self.angle = 0
 
-  self.weapons = {
-    uzi     = Uzi:new(world, camera),
-    shotgun = Shotgun:new(world, camera),
-    bazooka = Bazooka:new(world, camera),
-    handgun = Handgun:new(world, camera)
-  }
+  self.weapons = {}
 
-  self.brain = brain
+  self.desiredAngle = 0
+  self.desiredMovementVector = {x=0,y=0}
+  self.wantsToAttack = false
+end
+
+function Pawn:addWeapon(name, weapon)
+  self.weapons[name] = weapon
+  self.weapon = self.weapon or weapon
 end
 
 function Pawn:filter(other)
@@ -60,12 +57,14 @@ function Pawn:moveTowards(dx,dy, dt)
 end
 
 function Pawn:setWeapon(desiredWeaponName)
-  self.weapon = self.weapons[self.brain:getDesiredWeaponName()]
+  self.weapon = self.weapons[desiredWeaponName] or self.weapon
 end
 
 function Pawn:attack()
-  local x,y = self:getCenter()
-  self.weapon:attack(x,y,self.angle)
+  if self.weapon then
+    local x,y = self:getCenter()
+    self.weapon:attack(x,y,self.angle)
+  end
 end
 
 function Pawn:update(dt)
@@ -73,18 +72,10 @@ function Pawn:update(dt)
     weapon:update(dt)
   end
 
-  self.brain:setPosition(self:getCenter())
-  self.brain:update(dt)
+  self:lookTowards(self.desiredAngle, dt)
+  self:moveTowards(self.desiredMovementVector.x, self.desiredMovementVector.y, dt)
 
-  local desiredAngle = self.brain:getDesiredAngle()
-  self:lookTowards(desiredAngle, dt)
-
-  local dx,dy = self.brain:getDesiredMovementVector()
-  self:moveTowards(dx,dy, dt)
-
-  self:setWeapon(self.brain:getDesiredWeaponName())
-
-  if self.brain:wantsToAttack() then self:attack() end
+  if self.wantsToAttack then self:attack() end
 end
 
 function Pawn:draw()
