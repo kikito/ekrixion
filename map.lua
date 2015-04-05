@@ -57,10 +57,6 @@ function Map:initialize(width, height, camera)
   end
 end
 
-function Map:draw()
-  love.graphics.print("Map", 100, 100)
-end
-
 function Map:update(dt, l,t,w,h)
   local margin = 100
   local visibleThings, len = self.world:queryRect(l-margin,t-margin,w+2*margin,h+2*margin)
