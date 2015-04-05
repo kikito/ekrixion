@@ -28,7 +28,7 @@ function Rocket:destroy()
 
   self.camera:shake(4)
 
-  media.sfx.explosion:play()
+  self:playSFX('explosion')
 
   Projectile.destroy(self)
 end

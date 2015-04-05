@@ -1,5 +1,4 @@
 local class      = require 'lib.middleclass'
-local media      = require 'media'
 local Puff       = require 'entities.puff'
 local Projectile = require 'entities.projectiles.projectile'
 
@@ -38,7 +37,7 @@ end
 function Pellet:hit(other)
   Projectile.hit(self, other)
 
-  media.sfx['bullet-hit']:play()
+  self:playSFX('bullet-hit')
 
   Puff:createMany(self.world,
     3,
