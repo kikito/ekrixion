@@ -67,6 +67,10 @@ function Map:update(dt, l,t,w,h)
 
   for i=1, len do
     visibleThings[i]:update(dt)
+    if visibleThings[i] == self.playerBody then
+      local x,y = self.playerBody:getCenter()
+      love.audio.setPosition(x,y,15) -- random z value so that transitions to left/right are less jarring
+    end
   end
 end
 
@@ -85,7 +89,5 @@ end
 function Map:keyPressed(key)
   self.playerBrain:keyPressed(key)
 end
-
-
 
 return Map
