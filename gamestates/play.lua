@@ -11,6 +11,8 @@ function Play:enteredState()
   self.camera = shakycam.new(camera)
 
   self.map = Map:new(width, height, self.camera)
+
+  love.audio.setDistanceModel("linear clamped")
 end
 
 function Play:keypressed(key, isrepeat)
@@ -21,6 +23,7 @@ function Play:keypressed(key, isrepeat)
 end
 
 function Play:exitedState()
+  love.audio.setDistanceModel("none")
   self.map = nil
 end
 
