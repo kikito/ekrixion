@@ -63,7 +63,7 @@ end
 function Pawn:attack()
   if self.weapon then
     local x,y = self:getCenter()
-    self.weapon:attack(x,y,self.angle)
+    self.weapon:attack(self, x,y,self.angle)
   end
 end
 
@@ -76,6 +76,8 @@ function Pawn:update(dt)
   self:moveTowards(self.desiredMovementVector.x, self.desiredMovementVector.y, dt)
 
   if self.wantsToAttack then self:attack() end
+
+  Entity.update(self, dt)
 end
 
 function Pawn:draw()

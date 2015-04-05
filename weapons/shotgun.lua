@@ -14,8 +14,8 @@ function Shotgun:initialize(world, camera)
   })
 end
 
-function Shotgun:attack(x,y,angle)
-  if Weapon.attack(self, x,y,angle) then
+function Shotgun:attack(attacker, x,y,angle)
+  if Weapon.attack(self, attacker, x,y,angle) then
     self.camera:shake(2)
     return true
   end
