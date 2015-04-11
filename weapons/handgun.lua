@@ -14,4 +14,12 @@ function Handgun:initialize(world, camera)
   })
 end
 
+function Handgun:attack(attacker, x,y,angle)
+  if Weapon.attack(self, attacker, x,y,angle) then
+    self.camera:shakeSmall()
+    return true
+  end
+end
+
+
 return Handgun

@@ -26,7 +26,7 @@ function Rocket:destroy()
     0.5
   )
 
-  self.camera:shake(4)
+  self.camera:shakeBig()
 
   self:playSFX('explosion')
 
