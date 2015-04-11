@@ -1,16 +1,17 @@
-local shakycam = require 'lib.shakycam'
-local gamera = require 'lib.gamera'
-local Map = require 'Map'
+local bump  = require 'lib.bump'
+
+local CameraMan = require 'camera_man'
+local Map = require 'map'
 
 local Play = {}
 
 function Play:enteredState()
+  self.world = bump.newWorld()
   local width, height = 2000, 2000
 
-  local camera = gamera.new(0,0, width, height)
-  self.camera = shakycam.new(camera)
+  self.camera = CameraMan:new(world, width, height)
 
-  self.map = Map:new(width, height, self.camera)
+  self.map = Map:new(self.world, width, height, self.camera)
 
   love.audio.setDistanceModel("linear clamped")
 end

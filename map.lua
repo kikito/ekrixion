@@ -1,4 +1,3 @@
-local bump  = require 'lib.bump'
 local class = require 'lib.middleclass'
 
 local Pawn   = require 'entities.pawn'
@@ -15,14 +14,12 @@ local Bazooka = require 'weapons.bazooka'
 
 local Map = class('Map')
 
-function Map:initialize(width, height, camera)
-  self.height = height
-  self.width = width
-  self.camera = camera
-  self.brains = {}
-
-  self.world = bump.newWorld()
-  local world = self.world
+function Map:initialize(world, width, height, camera)
+  self.height  = height
+  self.width   = width
+  self.camera  = camera
+  self.world   = world
+  self.brains  = {}
 
   self.playerBody = Pawn:new(camera, world, 100, 100)
   self.playerBrain = PlayerBrain:new(camera, self.playerBody)
