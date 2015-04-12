@@ -21,7 +21,7 @@ function Map:initialize(world, width, height, camera)
   self.world   = world
   self.brains  = {}
 
-  self.playerBody = Pawn:new(camera, world, 100, 100)
+  self.playerBody  = Pawn:new(camera, world, 1000, 1000)
   self.playerBrain = PlayerBrain:new(camera, self.playerBody)
   self.brains[self.playerBrain] = true
 

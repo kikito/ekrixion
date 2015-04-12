@@ -3,27 +3,32 @@ local class  = require 'lib.middleclass'
 
 local CameraMan = class('CameraMan')
 
-local MAX_SHAKE_INTENSITY = 20  -- pixels
-local MAX_SHAKE_FREQUENCY = 0.1 -- seconds
-local ATENUATION_SPEED    = 30  -- pixels / second
+local filter = function(_, other)
+  return other.class.name == 'CameraShaker'
+end
 
-local function doShake(self)
-  self.shakeX = (math.random() - 0.5) * self.shakeIntensity
-  self.shakeY = (math.random() - 0.5) * self.shakeIntensity
-  self.timeSinceLastShake = 0
+local function spring(value, velocity, target, dt)
+  local omega   = math.pi * 8
+  local zeta    = 0.23
+  local f       = 1.0 + dt * zeta * omega * 2.0
+  local dtoo    = dt * omega * omega
+  local dtdtoo  = dt * dtoo
+  local det     = f + dtdtoo
+  value    = (f * value + dt * velocity + dtdtoo * target) / det
+  velocity = (velocity + dtoo * (target - value)) / det
+  return value, velocity
 end
 
 function CameraMan:initialize(world, width, height)
   self.camera = gamera.new(0,0,width,height)
   self.world = world
-  self.shakeIntensity = 0
-  self.shakeX = 0
-  self.shakeY = 0
-  self.timeSinceLastShake = 0
+  self.x,  self.y  = 0,0
+  self.vx, self.vy = 0,0
+  self.tx, self.ty = 0,0
 end
 
 local methods = [[
-  setWorld setWindow setPosition setAngle
+  setWorld setWindow setAngle
   getScale getWorld getWindow getPosition getScale getAngle
   getVisible getVisibleCorners
   draw
@@ -36,34 +41,31 @@ for name in methods:gmatch('%S+') do
   end
 end
 
-function CameraMan:shakeBig()
-  self:shake(MAX_SHAKE_INTENSITY)
+function CameraMan:shake(dx, dy)
+  self.x = (math.random() - 0.5) * 10
+  self.y = (math.random() - 0.5) * 10
 end
 
-function CameraMan:shakeMedium()
-  self:shake(MAX_SHAKE_INTENSITY/2)
+function CameraMan:setTarget(x,y)
+  self.tx, self.ty = x,y
 end
 
-function CameraMan:shakeSmall()
-  self:shake(MAX_SHAKE_INTENSITY/3.5)
-end
+function CameraMan:reactToShakers(x,y)
+  local items, len = self.world:queryPoint(x,y,filter)
 
-function CameraMan:shake(intensity)
-  self.shakeIntensity = math.min(MAX_SHAKE_INTENSITY, self.shakeIntensity + intensity)
-  doShake(self)
+  for i=1, len do
+    local cx,cy = items[i]:getCenter()
+    local dx,dy = x - cx, y - cy
+    self.x = self.x + dx
+    self.y = self.y + dy
+  end
 end
 
 function CameraMan:update(dt)
-  self.shakeIntensity = math.max(0 , self.shakeIntensity - ATENUATION_SPEED * dt)
+  self.x, self.vx = spring(self.x, self.vx, self.tx, dt)
+  self.y, self.vy = spring(self.y, self.vy, self.ty, dt)
 
-  self.timeSinceLastShake = self.timeSinceLastShake + dt + math.random() * dt
-
-  if self.timeSinceLastShake >= MAX_SHAKE_FREQUENCY then
-    doShake(self)
-  end
-
-  local x,y = self.camera:getPosition()
-  self:setPosition(x + self.shakeX, y + self.shakeY)
+  self.camera:setPosition(self.x, self.y)
 end
 
 return CameraMan

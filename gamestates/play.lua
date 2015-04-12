@@ -30,7 +30,7 @@ end
 
 function Play:update(dt)
   self.map:update(dt, self.camera:getVisible())
-  self.camera:setPosition(self.map:getPlayerPosition())
+  self.camera:setTarget(self.map:getPlayerPosition())
   self.camera:update(dt)
 end
 

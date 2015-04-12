@@ -16,7 +16,7 @@ end
 
 function Handgun:attack(attacker, x,y,angle)
   if Weapon.attack(self, attacker, x,y,angle) then
-    self.camera:shakeSmall()
+    self.camera:shake()
     return true
   end
 end
