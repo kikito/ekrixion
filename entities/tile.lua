@@ -10,4 +10,9 @@ function Tile:initialize(world, x, y)
   Entity.initialize(self, world, x, y, w, h)
 end
 
+function Tile:draw(drawDebug)
+  love.graphics.setColor(255,255,255)
+  love.graphics.rectangle('line', self.x, self.y, self.w, self.h)
+end
+
 return Tile

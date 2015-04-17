@@ -41,4 +41,9 @@ function Puff:update(dt)
   self.clock:update(dt)
 end
 
+function Puff:draw(drawDebug)
+  love.graphics.setColor(255,255,255)
+  love.graphics.rectangle('line', self.x, self.y, self.w, self.h)
+end
+
 return Puff
