@@ -32,7 +32,7 @@ function Entity:playSFX(name)
   local x,y = self:getCenter()
   local sfx = media.sfx[name]:play()
 
-  sfx:setAttenuationDistances(20, 500)
+  sfx:setAttenuationDistances(20, 600)
   sfx:setPosition(x,y,0)
 
   self.sfx[sfx] = true
