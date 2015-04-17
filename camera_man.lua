@@ -3,7 +3,7 @@ local class  = require 'lib.middleclass'
 
 local CameraMan = class('CameraMan')
 
-local filter = function(_, other)
+local filter = function(other)
   return other.class.name == 'CameraShaker'
 end
 
@@ -50,15 +50,32 @@ function CameraMan:setTarget(x,y)
   self.tx, self.ty = x,y
 end
 
+function CameraMan:setPosition(x,y)
+  self.camera:setPosition(x,y)
+  self.x, self.y = x,y
+  self.tx, self.ty = x,y
+  self.vx, self.vy = 0,0
+end
+
 function CameraMan:reactToShakers(x,y)
   local items, len = self.world:queryPoint(x,y,filter)
 
+  local item,cx,cy,dx,dy,size, distance, intensity, factor
   for i=1, len do
-    local cx,cy = items[i]:getCenter()
-    local dx,dy = x - cx, y - cy
-    self.x = self.x + dx
-    self.y = self.y + dy
+    item       = items[i]
+    size       = item.w/2
+    cx,cy      = item:getCenter()
+    dx,dy      = cx-x, cy-y
+
+    distance   = math.sqrt(dx*dx+dy*dy)
+    intensity  = size - distance
+    factor     = intensity/distance
+    dx,dy      = dx * factor, dy * factor
+
+    self.x     = self.x + dx
+    self.y     = self.y + dy
   end
+
 end
 
 function CameraMan:update(dt)
