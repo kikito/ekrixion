@@ -2,6 +2,7 @@ local class      = require 'lib.middleclass'
 local media      = require 'media'
 local Projectile = require 'entities.projectiles.projectile'
 local Puff       = require 'entities.puff'
+local CameraShaker = require 'entities.camera_shaker'
 
 local Rocket = class('Rocket', Projectile)
 
@@ -26,7 +27,10 @@ function Rocket:destroy()
     0.5
   )
 
-  self.camera:shakeBig()
+  local size = 200
+  local cx, cy = self:getCenter()
+
+  CameraShaker:new(self.world, cx, cy, 400, 0.1)
 
   self:playSFX('explosion')
 
