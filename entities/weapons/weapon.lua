@@ -29,7 +29,7 @@ function Weapon:setCoords(x,y,angle)
   self.world:update(self, self.x, self.y)
 end
 
-function Weapon:attack()
+function Weapon:fire()
   if self.canFire then
     local opts = self.options
 

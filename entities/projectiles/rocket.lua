@@ -27,9 +27,7 @@ function Rocket:destroy()
     0.5
   )
 
-  local size = 200
   local cx, cy = self:getCenter()
-
   CameraShaker:new(self.world, cx, cy, 400, 0.1)
 
   self:playSFX('explosion')

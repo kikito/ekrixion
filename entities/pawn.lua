@@ -63,7 +63,7 @@ end
 function Pawn:attack()
   if self.weapon then
     local x,y = self:getCenter()
-    self.weapon:attack()
+    self.weapon:fire()
   end
 end
 
