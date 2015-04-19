@@ -8,8 +8,11 @@ local filter = function(other)
 end
 
 local function spring(value, velocity, target, dt)
-  local omega   = math.pi * 8
-  local zeta    = 0.23
+  local oscillations = 4
+  local attenuation = 0.9
+
+  local omega   = math.pi * 2 * oscillations
+  local zeta    = math.log(1 - attenuation) / (-omega)
   local f       = 1.0 + dt * zeta * omega * 2.0
   local dtoo    = dt * omega * omega
   local dtdtoo  = dt * dtoo
