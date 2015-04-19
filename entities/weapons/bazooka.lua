@@ -1,0 +1,19 @@
+local class = require 'lib.middleclass'
+local Weapon = require 'entities.weapons.weapon'
+local Rocket = require 'entities.projectiles.rocket'
+
+local Bazooka = class('Bazooka', Weapon)
+
+local OPTIONS = {
+  spread   = 0.01, -- radians
+  coolDown = 0.7, -- seconds
+  bulletsPerShot  = 1,
+  projectileClass = Rocket,
+  soundName = 'rocket-shot'
+}
+
+function Bazooka:initialize(world, x, y, angle)
+  Weapon.initialize(self, world, x, y, angle, OPTIONS)
+end
+
+return Bazooka

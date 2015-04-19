@@ -63,7 +63,7 @@ end
 function Pawn:attack()
   if self.weapon then
     local x,y = self:getCenter()
-    self.weapon:attack(self, x,y,self.angle)
+    self.weapon:attack()
   end
 end
 
@@ -75,9 +75,25 @@ function Pawn:update(dt)
   self:lookTowards(self.desiredAngle, dt)
   self:moveTowards(self.desiredMovementVector.x, self.desiredMovementVector.y, dt)
 
+  if self.weapon then
+    local hx,hy = self:getHandPosition()
+    self.weapon:setCoords(hx, hy, self.angle)
+  end
+
   if self.wantsToAttack then self:attack() end
 
   Entity.update(self, dt)
+end
+
+function Pawn:getHandPosition()
+  local ARM_SIZE = 15
+  local x,y = self:getCenter()
+
+  local angle = self.angle
+
+  local dx, dy = math.cos(angle), math.sin(angle)
+
+  return x + dx * ARM_SIZE, y + dy * ARM_SIZE
 end
 
 function Pawn:draw()
@@ -87,6 +103,11 @@ function Pawn:draw()
   local radius = width / 2
   love.graphics.circle('line', x,y, radius)
   love.graphics.line(x,y, x + radius * math.cos(self.angle), y + radius * math.sin(self.angle))
+
+  if self.weapon then
+    self.weapon:drawHold()
+  end
+
 end
 
 return Pawn

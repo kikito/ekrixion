@@ -12,8 +12,8 @@ local options = {
   speedVariance = 800
 }
 
-function Pellet:initialize(world, camera,  x, y, angle)
-  Projectile.initialize(self, world, camera, x, y, angle, options)
+function Pellet:initialize(world, x, y, angle)
+  Projectile.initialize(self, world, x, y, angle, options)
 
   self.trace_x, self.trace_y = self.x, self.y
   self.trace_speed = self.speed - 300 * math.random()

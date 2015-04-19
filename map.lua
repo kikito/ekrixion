@@ -7,10 +7,10 @@ local Target = require 'entities.target'
 local PlayerBrain = require 'player_brain'
 local CrazyBrain = require 'crazy_brain'
 
-local Shotgun = require 'weapons.shotgun'
-local Uzi     = require 'weapons.uzi'
-local Handgun = require 'weapons.handgun'
-local Bazooka = require 'weapons.bazooka'
+local Shotgun = require 'entities.weapons.shotgun'
+local Uzi     = require 'entities.weapons.uzi'
+local Handgun = require 'entities.weapons.handgun'
+local Bazooka = require 'entities.weapons.bazooka'
 
 local Map = class('Map')
 
@@ -25,10 +25,10 @@ function Map:initialize(world, width, height, camera)
   self.playerBrain = PlayerBrain:new(camera, self.playerBody)
   self.brains[self.playerBrain] = true
 
-  self.playerBody:addWeapon('uzi',     Uzi:new(world, camera))
-  self.playerBody:addWeapon('shotgun', Shotgun:new(world, camera))
-  self.playerBody:addWeapon('bazooka', Bazooka:new(world, camera))
-  self.playerBody:addWeapon('handgun', Handgun:new(world, camera))
+  self.playerBody:addWeapon('uzi',     Uzi:new(world, 1000, 1000, 0))
+  self.playerBody:addWeapon('shotgun', Shotgun:new(world, 1000, 1000, 0))
+  self.playerBody:addWeapon('bazooka', Bazooka:new(world, 1000, 1000, 0))
+  self.playerBody:addWeapon('handgun', Handgun:new(world, 1000, 1000, 0))
 
   for i=1,100 do
     Tile:new(world,
@@ -47,7 +47,7 @@ function Map:initialize(world, width, height, camera)
       world,
       math.random(100, width - 100),
       math.random(100, height - 100))
-    body:addWeapon('uzi', Uzi:new(world, camera))
+    body:addWeapon('uzi', Uzi:new(world, body.x, body.y, 0))
 
     local brain = CrazyBrain:new(body)
     self.brains[brain] = true
