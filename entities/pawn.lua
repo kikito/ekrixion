@@ -1,6 +1,10 @@
 local class = require 'lib.middleclass'
 
 local Entity = require 'entities.entity'
+local Shotgun = require 'entities.weapons.shotgun'
+local Uzi     = require 'entities.weapons.uzi'
+local Handgun = require 'entities.weapons.handgun'
+local Bazooka = require 'entities.weapons.bazooka'
 
 local Pawn = class('Pawn', Entity)
 
@@ -18,6 +22,10 @@ function Pawn:initialize(camera, world, x,y)
   self.desiredAngle = 0
   self.desiredMovementVector = {x=0,y=0}
   self.wantsToAttack = false
+  self:addWeapon('uzi',     Uzi:new(world, x,y, 0))
+  self:addWeapon('shotgun', Shotgun:new(world, x,y, 0))
+  self:addWeapon('bazooka', Bazooka:new(world, x,y, 0))
+  self:addWeapon('handgun', Handgun:new(world, x,y, 0))
 end
 
 function Pawn:addWeapon(name, weapon)
