@@ -1,6 +1,8 @@
 local class = require 'lib.middleclass'
 
 local Entity = require 'entities.entity'
+local Hand = require 'entities.hand'
+
 local Shotgun = require 'entities.weapons.shotgun'
 local Uzi     = require 'entities.weapons.uzi'
 local Handgun = require 'entities.weapons.handgun'
@@ -22,6 +24,10 @@ function Pawn:initialize(camera, world, x,y)
   self.desiredAngle = 0
   self.desiredMovementVector = {x=0,y=0}
   self.wantsToAttack = false
+
+  self.leftHand  = Hand:new(self, 15, -math.pi/5)
+  self.rightHand = Hand:new(self, 15,  math.pi/5)
+
   self:addWeapon('uzi',     Uzi:new(world, x,y, 0))
   self:addWeapon('shotgun', Shotgun:new(world, x,y, 0))
   self:addWeapon('bazooka', Bazooka:new(world, x,y, 0))
@@ -82,25 +88,13 @@ function Pawn:update(dt)
   self:lookTowards(self.desiredAngle, dt)
   self:moveTowards(self.desiredMovementVector.x, self.desiredMovementVector.y, dt)
 
-  if self.weapon then
-    local hx,hy = self:getHandPosition()
-    self.weapon:setCoords(hx, hy, self.angle)
-  end
-
   if self.wantsToAttack then self:attack() end
 
   Entity.update(self, dt)
-end
 
-function Pawn:getHandPosition()
-  local ARM_SIZE = 15
-  local x,y = self:getCenter()
+  self.rightHand:updatePosition()
+  self.leftHand:updatePosition()
 
-  local angle = self.angle
-
-  local dx, dy = math.cos(angle), math.sin(angle)
-
-  return x + dx * ARM_SIZE, y + dy * ARM_SIZE
   if self.weapon then
     self.weapon:setCoords(self.rightHand.x, self.rightHand.y, self.angle)
   end
@@ -118,6 +112,8 @@ function Pawn:draw()
     self.weapon:draw()
   end
 
+  self.rightHand:draw()
+  self.leftHand:draw()
 end
 
 return Pawn
