@@ -19,8 +19,7 @@ end
 
 function Shotgun:fire()
   if self.canFire then
-    local cx, cy = self:getCenter()
-    CameraShaker:new(self.world, cx, cy, 40, 0.1)
+    CameraShaker:new(self.world, self.x, self.y, 40, 0.1)
   end
 
   Weapon.fire(self)

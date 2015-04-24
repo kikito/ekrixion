@@ -70,7 +70,6 @@ end
 
 function Pawn:attack()
   if self.weapon then
-    local x,y = self:getCenter()
     self.weapon:fire()
   end
 end
@@ -102,6 +101,9 @@ function Pawn:getHandPosition()
   local dx, dy = math.cos(angle), math.sin(angle)
 
   return x + dx * ARM_SIZE, y + dy * ARM_SIZE
+  if self.weapon then
+    self.weapon:setCoords(self.rightHand.x, self.rightHand.y, self.angle)
+  end
 end
 
 function Pawn:draw()
@@ -113,7 +115,7 @@ function Pawn:draw()
   love.graphics.line(x,y, x + radius * math.cos(self.angle), y + radius * math.sin(self.angle))
 
   if self.weapon then
-    self.weapon:drawHold()
+    self.weapon:draw()
   end
 
 end
