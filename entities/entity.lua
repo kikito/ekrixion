@@ -1,42 +1,26 @@
 local class = require 'lib.middleclass'
-local media = require 'media'
+
+local SoundPlayer = require 'sound_player'
 
 local Entity = class 'Entity'
 
 function Entity:initialize(world, x,y,w,h)
   self.world = world
   self.x, self.y, self.w, self.h = x,y,w,h
+  self.soundPlayer = SoundPlayer:new(self:getCenter())
   world:add(self, x,y,w,h)
-  self.sfx = {}
 end
 
 function Entity:draw(drawDebug)
 end
 
 function Entity:update(dt)
-  self:updateSFX()
-end
-
-function Entity:updateSFX()
-  local x,y = self:getCenter()
-  for sfx in pairs(self.sfx) do
-    if sfx:isStopped() then
-      self.sfx[sfx] = nil
-    else
-      sfx:setPosition(x,y)
-    end
-  end
+  self.soundPlayer:setPosition(self:getCenter())
+  self.soundPlayer:update()
 end
 
 function Entity:playSFX(name)
-  local x,y = self:getCenter()
-  local sfx = media.sfx[name]:play()
-
-  sfx:setAttenuationDistances(20, 600)
-  sfx:setPosition(x,y,0)
-
-  self.sfx[sfx] = true
-  return sfx
+  self.soundPlayer:play(name)
 end
 
 function Entity:getCenter()
